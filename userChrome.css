@@ -1,0 +1,69 @@
+/* Customizations to the FF display
+Changes found at https://medium.com/@Aenon/firefox-hide-native-tabs-and-titlebar-f0b00bdbb88b
+
+Additional tweaks can be found at:  https://github.com/Timvde/UserChrome-Tweaks
+
+Seth Forrest, Apr 2019
+ */
+
+ /* hides the native tabs */
+ #TabsToolbar {
+  visibility: collapse;
+ }
+
+ #titlebar {
+  visibility: collapse;
+}
+
+/* #sidebar-header {
+  visibility: collapse !important;
+} */
+
+/************************/
+
+:root {
+  --nohover: 50px;
+  --visible: 250px;
+}
+
+#appcontent {
+    border-left: var(--nohover) solid black!important;
+}
+
+
+#sidebar-box {
+  position: relative !important;
+  overflow-x: hidden !important;
+  margin-right: calc(var(--nohover) * -1) !important; /* adds extra barrier on right; will be useful if I can figure out border */
+  left: var(--nohover) !important;
+  min-width: var(--nohover) !important;
+  max-width: var(--nohover) !important;
+  /* opacity: 1 !important; */
+}
+
+#sidebar-box:hover {
+  margin-right: calc(var(--visible) * -1) !important;
+  left: var(--visible) !important;
+  min-width: var(--visible) !important;
+  max-width: var(--visible) !important;
+  opacity: .8 !important;
+
+  transition-delay: .25s;
+}
+
+#sidebar {
+}
+
+#sidebar:hover {
+}
+
+
+
+/* #sidebar-header is hidden by default, change "none" to "inherit" to restore it. */
+#sidebar-header {
+  display: none !important;
+}
+
+/* #sidebar-splitter styles the divider between the sidebar and the rest of the browser. */
+#sidebar-splitter {
+}
