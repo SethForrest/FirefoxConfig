@@ -3,23 +3,39 @@ Changes found at https://medium.com/@Aenon/firefox-hide-native-tabs-and-titlebar
 
 Additional tweaks can be found at:  https://github.com/Timvde/UserChrome-Tweaks
 
+Access the browser toolbox:
+`Ctrl + Alt + Shift + I`
+
 Seth Forrest, Apr 2019
  */
 
- /* hides the native tabs */
- #TabsToolbar {
+/* hides the native tabs */
+/* #TabsToolbar {
   visibility: collapse;
- }
-
- #titlebar {
+} */
+/* #titlebar {
   visibility: collapse;
-}
-
-/* #sidebar-header {
-  visibility: collapse !important;
 } */
 
-/************************/
+
+/* Hide horizontal tabs at the top of the window */
+#tabbrowser-tabs {
+  visibility: collapse !important;
+}
+
+
+/* leaves space for the window buttons */
+#nav-bar {
+    margin-top: -30px;
+    margin-right: 140px;
+}
+
+/* aligns window buttons (close, minimize, full-screen); Not working */
+/* #titlebar-buttonbox {
+    top: 10px;
+} */
+
+/*********** Tree-Style Tab Drawer *************/
 
 :root {
   --nohover: 50px;
@@ -34,7 +50,7 @@ Seth Forrest, Apr 2019
 #sidebar-box {
   position: relative !important;
   overflow-x: hidden !important;
-  margin-right: calc(var(--nohover) * -1) !important; /* adds extra barrier on right; will be useful if I can figure out border */
+  margin-right: calc(var(--nohover) * -1) !important; /* adds extra barrier on right */
   left: var(--nohover) !important;
   min-width: var(--nohover) !important;
   max-width: var(--nohover) !important;
@@ -46,24 +62,18 @@ Seth Forrest, Apr 2019
   left: var(--visible) !important;
   min-width: var(--visible) !important;
   max-width: var(--visible) !important;
-  opacity: .8 !important;
+  opacity: .9 !important;
 
   transition-delay: .25s;
 }
 
-#sidebar {
-}
-
-#sidebar:hover {
-}
-
-
-
-/* #sidebar-header is hidden by default, change "none" to "inherit" to restore it. */
+/* #sidebar-header is hidden by default, change "none" to
+   "inherit" to restore it. */
 #sidebar-header {
   display: none !important;
 }
 
-/* #sidebar-splitter styles the divider between the sidebar and the rest of the browser. */
+/* #sidebar-splitter styles the divider between the sidebar
+   and the rest of the browser. */
 #sidebar-splitter {
 }
