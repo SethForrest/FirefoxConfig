@@ -1,79 +1,73 @@
-/* Customizations to the FF display
-Changes found at https://medium.com/@Aenon/firefox-hide-native-tabs-and-titlebar-f0b00bdbb88b
-
-Additional tweaks can be found at:  https://github.com/Timvde/UserChrome-Tweaks
-
-Access the browser toolbox:
-`Ctrl + Alt + Shift + I`
-
-Seth Forrest, Apr 2019
- */
-
-/* hides the native tabs */
-/* #TabsToolbar {
-  visibility: collapse;
-} */
-/* #titlebar {
-  visibility: collapse;
-} */
-
+/*  Customizations to the FF display
+*
+*    Changes found at https://medium.com/@Aenon/firefox-hide-native-tabs-and-titlebar-f0b00bdbb88b
+*
+*    Additional tweaks can be found at:  https://github.com/Timvde/UserChrome-Tweaks
+*
+*
+*    Access the browser toolbox:
+*    `Ctrl + Alt + Shift + I`
+*
+*    Kill FF to reload:
+*    `Ctrl + Shift + Q`
+*
+*    Seth Forrest, Apr 2019
+*
+*
+*    Update(Jan 2020): FF72 broke some things. Fixes found at https://www.reddit.com/r/FirefoxCSS/comments/en95ja/treestyletabs_autohiding_sidebar_having_some/
+*/
 
 /* Hide horizontal tabs at the top of the window */
 #tabbrowser-tabs {
   visibility: collapse !important;
 }
-
-
 /* leaves space for the window buttons */
 #nav-bar {
     margin-top: -30px;
     margin-right: 140px;
 }
 
-/* aligns window buttons (close, minimize, full-screen); Not working */
-/* #titlebar-buttonbox {
-    top: 10px;
-} */
 
 /*********** Tree-Style Tab Drawer *************/
-
-:root {
-  --nohover: 50px;
-  --visible: 250px;
+/* Autohide Sidebar */
+/* Sidebar min and max width removal */
+#sidebar {
+  max-width: none !important;
+  min-width: 0px !important;
+  border-right: 1px solid rgba(0,0,0,.25);
 }
-
-#appcontent {
-    border-left: var(--nohover) solid black!important;
-}
-
-
-#sidebar-box {
-  position: relative !important;
-  overflow-x: hidden !important;
-  margin-right: calc(var(--nohover) * -1) !important; /* adds extra barrier on right */
-  left: var(--nohover) !important;
-  min-width: var(--nohover) !important;
-  max-width: var(--nohover) !important;
-  /* opacity: 1 !important; */
-}
-
-#sidebar-box:hover {
-  margin-right: calc(var(--visible) * -1) !important;
-  left: var(--visible) !important;
-  min-width: var(--visible) !important;
-  max-width: var(--visible) !important;
-  opacity: .9 !important;
-
-  transition-delay: .25s;
-}
-
-/* #sidebar-header is hidden by default, change "none" to
-   "inherit" to restore it. */
-#sidebar-header {
+/* Hide splitter, when using Tree Style Tab. */
+#sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] + #sidebar-splitter {
   display: none !important;
 }
+/* Hide sidebar header, when using Tree Style Tab. */
+#sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] #sidebar-header {
+  visibility: collapse;
+}
 
-/* #sidebar-splitter styles the divider between the sidebar
-   and the rest of the browser. */
-#sidebar-splitter {
+/* Shrink sidebar until hovered, when using Tree Style Tab. */
+/*:root doesnt seem to work properly anymore, widths defined manually*/
+/* :root {
+  --nohover: 50px;
+  --visible: 250px; 
+} */
+#sidebar-box:not([sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"]) {
+  min-width: 50px!important;
+  max-width: none !important;
+}
+#sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] {
+  position: relative !important;
+  transition: all 300ms !important;
+  min-width: 50px!important;
+  max-width: 50px!important;
+  z-index: 1!important;
+}
+#sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"]:hover {
+  transition: all 300ms !important;
+  min-width: 250px!important;
+  max-width: 250px!important;
+
+/* Negative right-margin to keep page from being pushed to the side. */
+  margin-right: -200px!important; /*250px - 50px = 200px * -1 = -200px*/
+  z-index: 1!important;
 }
