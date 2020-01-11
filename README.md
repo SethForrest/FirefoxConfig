@@ -1,5 +1,6 @@
 # FirefoxConfig
-This is the `userChrome.css` file I use for Firefox
+This is the `userChrome.css` file I use for Firefox. Place this file in your firefox profile folder, which can be found in your firefox menu: `Help > Troubleshooting Information > Profile Folder` then clicking `Open Folder`. 
+Place the `userChrome.css` file in the `chrome` folder in this directory. If the `chrome` folder does not exist, create it.
 
 This is designed around the wonderful [Tree Style Tab](https://addons.mozilla.org/en-US/firefox/addon/tree-style-tab/) extension.  
 
