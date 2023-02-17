@@ -1,73 +1,94 @@
-/*  Customizations to the FF display
+/*  Customizations to the FF window
 *
-*    Changes found at https://medium.com/@Aenon/firefox-hide-native-tabs-and-titlebar-f0b00bdbb88b
+*  Access the browser toolbox:
+*  `Ctrl + Alt + Shift + I`
 *
-*    Additional tweaks can be found at:  https://github.com/Timvde/UserChrome-Tweaks
+*  Use the [Restart Normally] button on the about:profiles page to reload/test edits
 *
+*  Seth Forrest, Apr 2019
 *
-*    Access the browser toolbox:
-*    `Ctrl + Alt + Shift + I`
-*
-*    Kill FF to reload:
-*    `Ctrl + Shift + Q`
-*
-*    Seth Forrest, Apr 2019
-*
-*
-*    Update(Jan 2020): FF72 broke some things. Fixes found at https://www.reddit.com/r/FirefoxCSS/comments/en95ja/treestyletabs_autohiding_sidebar_having_some/
+*  Updates:
+*    Feb 2023: Fixed collapsing sidebar. Refactored everything based off https://gist.github.com/shvchk/ea637112f88fe29a3f21c141a9fcf709
+*    Jan 2020: FF72 broke some things. Fixes found at https://www.reddit.com/r/FirefoxCSS/comments/en95ja/treestyletabs_autohiding_sidebar_having_some/
 */
 
-/* Hide horizontal tabs at the top of the window */
-#tabbrowser-tabs {
-  visibility: collapse !important;
-}
-/* leaves space for the window buttons */
-#nav-bar {
-    margin-top: -30px;
-    margin-right: 140px;
-}
+@-moz-document url("chrome://browser/content/browser.xhtml") {
+  :root {
+    --custom-sidebar-collapsed-width: 35px;
+    --custom-sidebar-full-width: 20vw;
+    --custom-sidebar-border: 0px solid #404040;
+  }
 
+  /* Hide horizontal tabs at the top of the window */
+  #tabbrowser-tabs {
+    visibility: collapse !important;
+  }
+  
+  /* 'tucks' the default tab bar behind the search bar and leaves space
+  for the window buttons (140px) and for dragging the window around(40px)*/
+  #nav-bar {
+      margin-top: -43px;
+      margin-right: 180px;
+  }
 
-/*********** Tree-Style Tab Drawer *************/
-/* Autohide Sidebar */
-/* Sidebar min and max width removal */
-#sidebar {
-  max-width: none !important;
-  min-width: 0px !important;
-  border-right: 1px solid rgba(0,0,0,.25);
-}
-/* Hide splitter, when using Tree Style Tab. */
-#sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] + #sidebar-splitter {
-  display: none !important;
-}
-/* Hide sidebar header, when using Tree Style Tab. */
-#sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] #sidebar-header {
-  visibility: collapse;
-}
+  #navigator-toolbox {
+    border-bottom: 0 !important;
+  }
 
-/* Shrink sidebar until hovered, when using Tree Style Tab. */
-/*:root doesnt seem to work properly anymore, widths defined manually*/
-/* :root {
-  --nohover: 50px;
-  --visible: 250px; 
-} */
-#sidebar-box:not([sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"]) {
-  min-width: 50px!important;
-  max-width: none !important;
-}
-#sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] {
-  position: relative !important;
-  transition: all 300ms !important;
-  min-width: 50px!important;
-  max-width: 50px!important;
-  z-index: 1!important;
-}
-#sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"]:hover {
-  transition: all 300ms !important;
-  min-width: 250px!important;
-  max-width: 250px!important;
+  #browser {
+    position: relative;
+  }
 
-/* Negative right-margin to keep page from being pushed to the side. */
-  margin-right: -200px!important; /*250px - 50px = 200px * -1 = -200px*/
-  z-index: 1!important;
+  #sidebar-box:not([hidden]) {
+    position: absolute;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-right: var(--custom-sidebar-border);
+    min-width: var(--custom-sidebar-collapsed-width) !important;
+    width: var(--custom-sidebar-collapsed-width) !important;
+    height: 100%;
+    transition: all 0.2s ease;
+  }
+
+  #sidebar-box:hover,
+  #sidebar-header,
+  #sidebar {
+    width: var(--custom-sidebar-full-width) !important;
+  }
+
+  #sidebar {
+    flex-grow: 1;
+  }
+
+  #sidebar-splitter {
+    display: none;
+  }
+
+  #sidebar-box:not([hidden]) ~ #appcontent {
+    margin-left: var(--custom-sidebar-collapsed-width);
+  }
+
+  #sidebar-box:not([hidden]) ~ #appcontent .findbar-container {
+    min-width: calc(100vw - 48px - var(--custom-sidebar-collapsed-width)) !important;
+  }
+
+  /* Sidebar on the right */
+  #sidebar-box[positionend="true"]:not([hidden]) {
+    right: 0;
+  }
+
+  #sidebar-box[positionend="true"]:not([hidden]) ~ #appcontent {
+    margin-left: 0;
+    margin-right: var(--custom-sidebar-collapsed-width);
+    border-right: 0;
+    border-left: var(--custom-sidebar-border);
+  }
+
+  /* Full screen */
+  #main-window[inFullscreen][inDOMFullscreen] #appcontent {
+    margin-left: 0;
+    margin-right: 0;
+  }
 }
