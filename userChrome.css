@@ -8,6 +8,7 @@
 *  Seth Forrest, Apr 2019
 *
 *  Updates:
+*    Oct 2023: Added a note on how to fix visual glitches on FF-Linux by commenting out #nav-bar changes
 *    Feb 2023: Fixed collapsing sidebar. Refactored everything based off https://gist.github.com/shvchk/ea637112f88fe29a3f21c141a9fcf709
 *    Jan 2020: FF72 broke some things. Fixes found at https://www.reddit.com/r/FirefoxCSS/comments/en95ja/treestyletabs_autohiding_sidebar_having_some/
 */
@@ -25,7 +26,8 @@
   }
   
   /* 'tucks' the default tab bar behind the search bar and leaves space
-  for the window buttons (140px) and for dragging the window around(40px)*/
+  for the window buttons (140px) and for dragging the window around(40px)*/ 
+  /* NOTE: Comment out out when in FF-Linux; Otherwise can create weird visual glitches */
   #nav-bar {
       margin-top: -43px;
       margin-right: 180px;
