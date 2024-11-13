@@ -32,59 +32,61 @@
 
 /******************************************************************************/
 
-:root {
-  --custom-sidebar-collapsed-width: 35px;
-  --custom-sidebar-full-width: 250px;
-  --custom-sidebar-border: 0px solid #404040;
-}
-
-
 /* Sidebar Styling */
-#sidebar-box:not([hidden]) {
-  position: absolute;       /* Position the sidebar absolutely */
-  z-index: 1;               /* Ensure sidebar appears above other elements */
+#sidebar-box {
+  /* Variables */
+  --collapsed-width: 35px;
+  --full-width: 250px;
+  --border: 0px solid #404040;
+
+  /* position: absolute; */
+  position: relative;           /* Temp */
+
+  z-index: 3;               /* Ensure sidebar appears above other elements */
   display: flex;            /* Use flexbox for vertical alignment */
   flex-direction: column;
   overflow: hidden;         /* Hide any overflowed content */
-  border-right: var(--custom-sidebar-border);
-  min-width: var(--custom-sidebar-collapsed-width) !important; /* Collapsed width */
-  width: var(--custom-sidebar-collapsed-width) !important;
+  border-right: var(--border);
+  min-width: var(--collapsed-width) !important; /* Collapsed width */
+  width: var(--collapsed-width) !important;
   height: 100%;             /* Full height of the container */
-  transition: width 0.2s ease;  /* Smooth transition for width */
+
+  /* transition: width 0.3s ease; */
+  transition: width 0.8s ease;  /* Temp */
 }
 
 /* Expand sidebar when hovered or active */
 #sidebar-box:hover, #sidebar-header, #sidebar {
-  width: var(--custom-sidebar-full-width) !important;  /* Full width on hover or activation */
+  width: var(--full-width) !important;
 }
 
-#sidebar {
-  flex-grow: 1;  /* Allow sidebar content to grow */
-}
+/* #sidebar {
+  flex-grow: 1; 
+} */
 
 /* Hide the sidebar splitter */
-#sidebar-splitter {
+#sidebar-header, #sidebar-splitter {
   display: none;
 }
 
 /* Main content adjusts when sidebar is visible */
-#sidebar-box:not([hidden]) ~ #appcontent {
-  margin-left: var(--custom-sidebar-collapsed-width) !important;  /* Shift content for sidebar */
-}
+/* #sidebar-box:not([hidden]) ~ #appcontent {
+  margin-left: var(--collapsed-width) !important;
+} */
 
 /* Ensure findbar container resizes correctly */
-#sidebar-box:not([hidden]) ~ #appcontent .findbar-container {
-  min-width: calc(100vw - 48px - var(--custom-sidebar-collapsed-width)) !important;
-}
+/* #sidebar-box:not([hidden]) ~ #appcontent .findbar-container {
+  min-width: calc(100vw - 48px - var(--collapsed-width)) !important;
+} */
 
 /* Right Sidebar positioning */
-#sidebar-box[positionend="true"]:not([hidden]) {
-  right: 0;  /* Position sidebar on the right */
-}
+/* #sidebar-box[positionend="true"]:not([hidden]) {
+  right: 0;
+} */
 
-#sidebar-box[positionend="true"]:not([hidden]) ~ #appcontent {
-  margin-left: 0;  /* Remove left margin */
-  margin-right: var(--custom-sidebar-collapsed-width); /* Add right margin for sidebar */
-  border-left: var(--custom-sidebar-border);  /* Set left border for right-side sidebar */
-  border-right: 0;  /* Remove right border */
-}
+/* #sidebar-box[positionend="true"]:not([hidden]) ~ #appcontent {
+  margin-left: 0;
+  margin-right: var(--collapsed-width); 
+  border-left: var(--border); 
+  border-right: 0; 
+} */
