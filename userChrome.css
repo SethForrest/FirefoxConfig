@@ -1,96 +1,93 @@
-/*  Customizations to the FF window
+/* Customizations to the FF window
 *
-*  Access the browser toolbox:
-*  `Ctrl + Alt + Shift + I`
+* Access the browser toolbox: `Ctrl + Alt + Shift + I`
 *
-*  Use the [Restart Normally] button on the about:profiles page to reload/test edits
+* Use the [Restart Normally] button on the about:profiles page to reload/test edits
 *
-*  Seth Forrest, Apr 2019
+* Seth Forrest, Apr 2019
 *
-*  Updates:
-*    Oct 2023: Added a note on how to fix visual glitches on FF-Linux by commenting out #nav-bar changes
-*    Feb 2023: Fixed collapsing sidebar. Refactored everything based off https://gist.github.com/shvchk/ea637112f88fe29a3f21c141a9fcf709
-*    Jan 2020: FF72 broke some things. Fixes found at https://www.reddit.com/r/FirefoxCSS/comments/en95ja/treestyletabs_autohiding_sidebar_having_some/
+* Updates:
+*   Nov 2024: Refactored a bunch of stuff to fix an update in FF132
+*   Oct 2023: Added a note on how to fix visual glitches on FF-Linux by
+*       commenting out #nav-bar changes
+*   Feb 2023: Fixed collapsing sidebar. Refactored everything based off
+*       https://gist.github.com/shvchk/ea637112f88fe29a3f21c141a9fcf709
+*   Jan 2020: FF72 broke some things. Fixes found at
+*       https://www.reddit.com/r/FirefoxCSS/comments/en95ja/treestyletabs_autohiding_sidebar_having_some/
 */
 
-@-moz-document url("chrome://browser/content/browser.xhtml") {
-  :root {
-    --custom-sidebar-collapsed-width: 35px;
-    --custom-sidebar-full-width: 20vw;
-    --custom-sidebar-border: 0px solid #404040;
-  }
 
-  /* Hide horizontal tabs at the top of the window */
-  #tabbrowser-tabs {
-    visibility: collapse !important;
-  }
-  
-  /* 'tucks' the default tab bar behind the search bar and leaves space
-  for the window buttons (140px) and for dragging the window around(40px)*/ 
-  /* NOTE: Comment out out when in FF-Linux; Otherwise can create weird visual glitches */
-  #nav-bar {
-      margin-top: -43px;
-      margin-right: 180px;
-  }
-
-  #navigator-toolbox {
-    border-bottom: 0 !important;
-  }
-
-  #browser {
-    position: relative;
-  }
-
-  #sidebar-box:not([hidden]) {
-    position: absolute;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    border-right: var(--custom-sidebar-border);
-    min-width: var(--custom-sidebar-collapsed-width) !important;
-    width: var(--custom-sidebar-collapsed-width) !important;
-    height: 100%;
-    transition: all 0.2s ease;
-  }
-
-  #sidebar-box:hover,
-  #sidebar-header,
-  #sidebar {
-    width: var(--custom-sidebar-full-width) !important;
-  }
-
-  #sidebar {
-    flex-grow: 1;
-  }
-
-  #sidebar-splitter {
-    display: none;
-  }
-
-  #sidebar-box:not([hidden]) ~ #appcontent {
-    margin-left: var(--custom-sidebar-collapsed-width);
-  }
-
-  #sidebar-box:not([hidden]) ~ #appcontent .findbar-container {
-    min-width: calc(100vw - 48px - var(--custom-sidebar-collapsed-width)) !important;
-  }
-
-  /* Sidebar on the right */
-  #sidebar-box[positionend="true"]:not([hidden]) {
-    right: 0;
-  }
-
-  #sidebar-box[positionend="true"]:not([hidden]) ~ #appcontent {
-    margin-left: 0;
-    margin-right: var(--custom-sidebar-collapsed-width);
-    border-right: 0;
-    border-left: var(--custom-sidebar-border);
-  }
-
-  /* Full screen */
-  #main-window[inFullscreen][inDOMFullscreen] #appcontent {
-    margin-left: 0;
-    margin-right: 0;
-  }
+/******************************************************************************/
+/* Hide horizontal tabs at the top of the window */
+#tabbrowser-tabs {
+  visibility: collapse !important;
 }
+
+/* Tuck the tab bar behind the search bar and leave space for Windows buttons
+* NOTE: Comment out out when in Linux; Otherwise creates visual glitches */
+#nav-bar {
+  margin-top: -35px; /* How much of the top to hide; less is more */
+  margin-right: 180px; /* ~140px for buttons + ~40px for dragging */
+}
+
+/******************************************************************************/
+
+:root {
+  --custom-sidebar-collapsed-width: 35px;
+  --custom-sidebar-full-width: 250px;
+  --custom-sidebar-border: 0px solid #404040;
+}
+
+
+/* Sidebar Styling */
+#sidebar-box:not([hidden]) {
+  position: absolute;       /* Position the sidebar absolutely */
+  z-index: 1;               /* Ensure sidebar appears above other elements */
+  display: flex;            /* Use flexbox for vertical alignment */
+  flex-direction: column;
+  overflow: hidden;         /* Hide any overflowed content */
+  border-right: var(--custom-sidebar-border);
+  min-width: var(--custom-sidebar-collapsed-width) !important; /* Collapsed width */
+  width: var(--custom-sidebar-collapsed-width) !important;
+  height: 100%;             /* Full height of the container */
+  transition: width 0.2s ease;  /* Smooth transition for width */
+}
+
+/* Expand sidebar when hovered or active */
+#sidebar-box:hover, #sidebar-header, #sidebar {
+  width: var(--custom-sidebar-full-width) !important;  /* Full width on hover or activation */
+}
+
+#sidebar {
+  flex-grow: 1;  /* Allow sidebar content to grow */
+}
+
+/* Hide the sidebar splitter */
+#sidebar-splitter {
+  display: none;
+}
+
+/* Main content adjusts when sidebar is visible */
+#sidebar-box:not([hidden]) ~ #appcontent {
+  margin-left: var(--custom-sidebar-collapsed-width) !important;  /* Shift content for sidebar */
+}
+
+/* Ensure findbar container resizes correctly */
+#sidebar-box:not([hidden]) ~ #appcontent .findbar-container {
+  min-width: calc(100vw - 48px - var(--custom-sidebar-collapsed-width)) !important;
+}
+
+/* Right Sidebar positioning */
+#sidebar-box[positionend="true"]:not([hidden]) {
+  right: 0;  /* Position sidebar on the right */
+}
+
+#sidebar-box[positionend="true"]:not([hidden]) ~ #appcontent {
+  margin-left: 0;  /* Remove left margin */
+  margin-right: var(--custom-sidebar-collapsed-width); /* Add right margin for sidebar */
+  border-left: var(--custom-sidebar-border);  /* Set left border for right-side sidebar */
+  border-right: 0;  /* Remove right border */
+}
+
+
+
